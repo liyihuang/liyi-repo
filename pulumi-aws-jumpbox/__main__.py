@@ -7,6 +7,11 @@ import pulumi_aws as aws
 import requests
 
 
+
+config = pulumi.Config()
+
+enable_syncthing = config.get_bool("enable_syncthing")  or False
+
 key_url = 'https://github.com/liyihuang.keys'
 cloud_init_url = 'https://raw.githubusercontent.com/liyihuang/liyi-cloudinit/main/liyi-init.cfg'
 external_ip = requests.get('https://api.ipify.org', timeout=5).content.decode('utf8')+'/32'
@@ -102,8 +107,10 @@ jumpbox_fqdn = aws.route53.Record("jumpbox_fqdn",
     type="A",
     ttl=5,
     records=[jumpbox_public_ip])
-
-cloud_init_http_server_url = 'http://'+jumpbox_liyi_fqdn+':8000/'
-cloud_init_syncid_url = cloud_init_http_server_url+'syncid'
-
-jumpbox_fqdn.id.apply(setup_local_syncthing)
+if enable_syncthing:
+    cloud_init_http_server_url = 'http://'+jumpbox_liyi_fqdn+':8000/'
+    cloud_init_syncid_url = cloud_init_http_server_url+'syncid'
+    jumpbox_fqdn.id.apply(setup_local_syncthing)
+    pulumi.export("syncthing_status", "Syncthing is enabled and running.")
+else:
+    pulumi.export("syncthings_status", "Syncthing is disabled.")
