@@ -4,5 +4,7 @@ nodes:
 - role: control-plane
 - role: worker
 - role: worker
+- role: worker
 networking:
+  ipFamily: dual
   disableDefaultCNI: true

@@ -1,0 +1,11 @@
+debug:
+  enabled: true
+  verbose: datapath, policy, flow, envoy
+bpf:
+  monitorAggregation: none
+ipam:
+  mode: cluster-pool
+  operator:
+    clusterPoolIPv4PodCIDRList:
+      - 192.168.0.0/16
+    clusterPoolIPv4MaskSize: 24
