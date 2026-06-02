@@ -66,7 +66,7 @@ spec:
 apiVersion: "cilium.io/v2"
 kind: CiliumNetworkPolicy
 metadata:
-  name: "rule1"
+  name: "http"
 spec:
   description: "L7 policy to restrict access to specific HTTP call"
   endpointSelector:
